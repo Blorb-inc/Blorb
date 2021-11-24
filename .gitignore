@@ -58,3 +58,36 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# ignore demo folders
+Demos/
+
+Logs/
+Builds/
+Library/
+obj/
+Temp/
+Android/
+MemoryCaptures/
+StreamingAssets/
+Assets/Plugins/Android/*.aar*
+Assets/Plugins/Android/*.jar*
+Assets/GeneratedLocalRepo/
+Assets/StreamingAssets/google-services-desktop.json
+Assets/Plugins/Android/Firebase/
+
+Assets/AddressableAssetsData/Android/
+Assets/AddressableAssetsData/Android.meta
+Assets/AddressableAssetsData/Windows/
+Assets/AddressableAssetsData/Windows.meta
+
+*.vs/
+*.csproj
+*.sln
+*.mb
+*.mb.meta
+*.log
+*.psd
+*.vsconfig
+
+ProjectSettings/TimelineSettings.asset
+UserSettings/EditorUserSettings.asset
