@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - Start
+  - Sheep
+  - Chicken
+  - Joystick
   layers:
   - Default
   - TransparentFX
