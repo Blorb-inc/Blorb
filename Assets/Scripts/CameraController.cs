@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField]
-    private Transform target;
+    private Transform _target;
 
     [SerializeField] private float stoppingDistance;
+
+    public static CameraController Instance;
     // Start is called before the first frame update
     void Start()
     {
-        target = GameObject.FindWithTag("Player").transform;
+        _target = GameObject.FindWithTag("Player").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y, target.position.z-stoppingDistance);
+        transform.position = new Vector3(transform.position.x, transform.position.y, _target.position.z-stoppingDistance);
     }
 }

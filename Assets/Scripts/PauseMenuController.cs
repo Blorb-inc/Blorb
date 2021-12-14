@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +8,7 @@ public class PauseMenuController : MonoBehaviour
 {
     public void MenuButton ()
     {
-        GameManager.gameIsPaused = false;
+        GameManager.GameIsPaused = false;
         SceneManager.LoadScene(0);
     }
     public void RestartButton()
@@ -15,7 +16,7 @@ public class PauseMenuController : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.buildIndex);
         Time.timeScale = 1;
-        GameManager.gameIsPaused = false;
+        GameManager.GameIsPaused = false;
     }
     public void LevelButton()
     {
@@ -28,8 +29,7 @@ public class PauseMenuController : MonoBehaviour
     public void ResumeButton()
     {
         Time.timeScale = 1;
-        SceneManager.UnloadSceneAsync("PauseMenu");
-        GameManager.gameIsPaused = false;
+        GameManager.GameIsPaused = false;
     }
     public void Display()
     {

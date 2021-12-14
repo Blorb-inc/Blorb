@@ -1,113 +1,104 @@
-using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
+using Player;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using TMPro;
-using System;
 
-public enum PlayerSize
+namespace Managers
 {
-    Small = 0,
-    Medium = 1,
-    Large = 2
-}
-
-public enum GameState
-{
-    Start = 0,
-    GameOver = 1,
-    Loading = 2,
-    Menu = 3
-}
-
-public class GameManager : MonoBehaviour
-{
-    public static GameManager Instance;
-    public static bool tutorials;
-    [SerializeField]
-    private GameObject playerPrefab;
-    [SerializeField]
-    private PlayerSpotlight playerSpotLight;
-    [SerializeField]
-    private GameObject camPrefab;
-    [SerializeField]
-    private GameObject lightPrefab;
-
-    public CinemachineFreeLook cineCam;
-
-    public static bool gameIsPaused;
-    public static bool stopWatchActive;
-
-
-    public PlayerSize playerSize;
-
-    private GameObject startPoint;
-
-    private void Awake()
+    public enum Sizes
     {
-        Time.timeScale = 1;
-        PlayerController player = Instantiate(playerPrefab).GetComponent<PlayerController>();
-        player.transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
-        playerSize = PlayerSize.Medium;
-        GameObject camObject = Instantiate(camPrefab);
-       // GameObject dirLight = Instantiate(lightPrefab);
-        cineCam = camObject.GetComponentInChildren<CinemachineFreeLook>();
-        cineCam.Follow = player.transform;
-        cineCam.LookAt = player.transform;
-        if(playerSpotLight != null)
-        {
-            playerSpotLight.Setup(player);
-        }  
-        SceneManager.LoadScene("HUD", LoadSceneMode.Additive); // Loads HUD as overlay in other scenes
-        Instance = this;
-        player.Setup(camObject.GetComponentInChildren<Camera>().transform);
-       
+        Small = 0,
+        Medium = 1,
+        Large = 2
     }
-
-    private void Start()
+    
+    public class GameManager : MonoBehaviour
     {
-       
-    }
+        public static GameManager Instance;
+        public static bool Tutorials;
 
-    private void Update()
-    {
+        public static bool GameIsPaused;
 
-        if (Input.GetKeyDown(KeyCode.Escape)) // <- Brings up PauseMenu
+        private static GameObject _player;
+        private static PlayerMovementJoystick _playerMovement;
+
+        public Sizes currentSize;
+
+        private GameObject _pauseCanvas;
+
+        private void Awake()
         {
-            gameIsPaused = !gameIsPaused;
-            PauseGame();
+            if (Instance == null)
+            {
+                Instance = this;
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.R)) // <- Reset Map
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-
-       
-    }
-
-    void PauseGame() // This function pauses game and loads pause menu
-    {
-        if (gameIsPaused)
-        {
-            Time.timeScale = 0f;
-            SceneManager.LoadScene("PauseMenu", LoadSceneMode.Additive);
-        }
-        else
+        private void Start()
         {
             Time.timeScale = 1;
-            SceneManager.UnloadSceneAsync("PauseMenu");
-            gameIsPaused = false;
+            currentSize = Sizes.Medium;
+             
+            _player = GameObject.FindWithTag("Player");
+            _playerMovement = _player.GetComponent<PlayerMovementJoystick>();
+            _pauseCanvas = GameObject.FindWithTag("PauseMenu"); 
+            _playerMovement.SetSize((int)currentSize);
+            _pauseCanvas.SetActive(false);
         }
 
+        public void OnSizeUpButton()
+        {
+            if (currentSize >= Sizes.Large) return;
+            switch (currentSize)
+            {
+                case Sizes.Small: currentSize = Sizes.Medium;
+                    break;
+                case Sizes.Medium: currentSize = Sizes.Large;
+                    break;
+                case Sizes.Large:
+                    return;
+                default: Debug.Log($"Size doesn't exist at {currentSize}");
+                    break;
+            }
+            _playerMovement.SetSize((int)currentSize);
+        }   
+        
+        public void OnSizeDownButton()
+        {
+            if (currentSize <= Sizes.Small) return;
+            switch (currentSize)
+            {
+                case Sizes.Small: 
+                    return;
+                case Sizes.Medium: currentSize = Sizes.Small;
+                    break;
+                case Sizes.Large: currentSize = Sizes.Medium;
+                    break;
+                default: Debug.Log($"Size doesn't exist at {currentSize}");
+                    break;
+            }
+            _playerMovement.SetSize((int)currentSize);
+        }
 
-   
+        public void OnAbilityButton()
+        {
+            _playerMovement.Ability((int) currentSize);
+        }
+        
+       public void PauseGame()
+        {
+            if (!GameIsPaused)
+            {
+                Time.timeScale = 0f;
+                _pauseCanvas.SetActive(true);
+                GameIsPaused = true;
+            }
+            else
+            {
+                Time.timeScale = 1;
+                _pauseCanvas.SetActive(false);
+                GameIsPaused = false;
+                AudioManager.Instance.SaveVolume();
+            }
+
+        }
     }
 }
-
-
- 
-
-
- 

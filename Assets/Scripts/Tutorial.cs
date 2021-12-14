@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 public class Tutorial : MonoBehaviour
@@ -9,7 +8,7 @@ public class Tutorial : MonoBehaviour
 
     private void Awake()
     {
-        _canvas.enabled = GameManager.tutorials == false; 
+        _canvas.enabled = GameManager.Tutorials == false; 
         if(_canvas.enabled)
         {
             Time.timeScale = 0f;
@@ -19,7 +18,7 @@ public class Tutorial : MonoBehaviour
     public void Backbtn()
     {
         _canvas.enabled = false;
-        GameManager.tutorials = true;
+        GameManager.Tutorials = true;
         Time.timeScale = 1f;
     }
 }

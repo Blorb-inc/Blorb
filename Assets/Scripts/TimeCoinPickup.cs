@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 public class TimeCoinPickup : MonoBehaviour
@@ -24,7 +25,7 @@ public class TimeCoinPickup : MonoBehaviour
         {
             // Reduces -5 seconds to TimerController
             //Destroy(gameObject); // This destroys pickup
-            AudioManager.instance.Play("Chomp");
+            AudioManager.Instance.Play("Chomp");
             Finish.Instance.currentScore -= reduceTime;
 
         }

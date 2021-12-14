@@ -9,6 +9,7 @@ TagManager:
   - Sheep
   - Chicken
   - Joystick
+  - PauseMenu
   layers:
   - Default
   - TransparentFX
